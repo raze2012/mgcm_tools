@@ -1,5 +1,10 @@
 # mgcm_tools
 
+
+![home](https://github.com/raze2012/mgcm_tools/blob/master/examples/homepage.png) ![dresspage](https://github.com/raze2012/mgcm_tools/blob/master/examples/dresspage.png) ![dresspage2](https://github.com/raze2012/mgcm_tools/blob/master/examples/dresspage2.png)
+
+![filterUI](https://github.com/raze2012/mgcm_tools/blob/master/examples/filterUI.png) ![skills](https://github.com/raze2012/mgcm_tools/blob/master/examples/skills.png) ![skillsMod](https://github.com/raze2012/mgcm_tools/blob/master/examples/skillsMod.png)
+
 Various tools to help with your Magicami needs. Includes a skill and Dress database, complete with
 ways to filter and sort through them.
 
