@@ -37,7 +37,7 @@ the most stats to a particular main dress
 
 The data is updated based on [these sheets](https://docs.google.com/spreadsheets/d/1HkroakfeauzCiTS8rNJxwVCD-a9rb1h_hhOh8Gx20OE/edit#gid=1968620388).
 I may not have time to update them on a timely basis so feel free to reach out if you want to maintain it with future skill mods and dresses. At the moment,
-the sheets are updated through to the Goddess of Destiny, so it is ~2 months behind Japan's dresses.
+the sheets are updated through to the Goddess of Destiny, so it is updated to about 10/2020 in Japan's dresses.
 
 credit goes to Homu's [skill data sheet](https://docs.google.com/spreadsheets/d/1N80A2Uz0lQe8COz3e_xWOePh0_RIMq0hYxkgsMv0CWI/edit#gid=1428786078)
 for research in the skill powers.
