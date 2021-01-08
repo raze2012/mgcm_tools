@@ -55,7 +55,9 @@ class SkillTargetTypeAdapter extends TypeAdapter<SkillTargetType> {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is SkillTargetTypeAdapter && runtimeType == other.runtimeType && typeId == other.typeId;
+      other is SkillTargetTypeAdapter &&
+          runtimeType == other.runtimeType &&
+          typeId == other.typeId;
 }
 
 class SkillEnhanceTypeAdapter extends TypeAdapter<SkillEnhanceType> {
@@ -112,7 +114,9 @@ class SkillEnhanceTypeAdapter extends TypeAdapter<SkillEnhanceType> {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is SkillEnhanceTypeAdapter && runtimeType == other.runtimeType && typeId == other.typeId;
+      other is SkillEnhanceTypeAdapter &&
+          runtimeType == other.runtimeType &&
+          typeId == other.typeId;
 }
 
 class AttributeAdapter extends TypeAdapter<Attribute> {
@@ -168,7 +172,10 @@ class AttributeAdapter extends TypeAdapter<Attribute> {
 
   @override
   bool operator ==(Object other) =>
-      identical(this, other) || other is AttributeAdapter && runtimeType == other.runtimeType && typeId == other.typeId;
+      identical(this, other) ||
+      other is AttributeAdapter &&
+          runtimeType == other.runtimeType &&
+          typeId == other.typeId;
 }
 
 class CharacterAdapter extends TypeAdapter<Character> {
@@ -254,7 +261,10 @@ class CharacterAdapter extends TypeAdapter<Character> {
 
   @override
   bool operator ==(Object other) =>
-      identical(this, other) || other is CharacterAdapter && runtimeType == other.runtimeType && typeId == other.typeId;
+      identical(this, other) ||
+      other is CharacterAdapter &&
+          runtimeType == other.runtimeType &&
+          typeId == other.typeId;
 }
 
 class SkillEnhanceAdapter extends TypeAdapter<SkillEnhance> {
@@ -295,5 +305,7 @@ class SkillEnhanceAdapter extends TypeAdapter<SkillEnhance> {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is SkillEnhanceAdapter && runtimeType == other.runtimeType && typeId == other.typeId;
+      other is SkillEnhanceAdapter &&
+          runtimeType == other.runtimeType &&
+          typeId == other.typeId;
 }

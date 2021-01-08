@@ -90,5 +90,8 @@ class DressAdapter extends TypeAdapter<Dress> {
 
   @override
   bool operator ==(Object other) =>
-      identical(this, other) || other is DressAdapter && runtimeType == other.runtimeType && typeId == other.typeId;
+      identical(this, other) ||
+      other is DressAdapter &&
+          runtimeType == other.runtimeType &&
+          typeId == other.typeId;
 }

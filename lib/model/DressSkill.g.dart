@@ -120,5 +120,7 @@ class DressSkillAdapter extends TypeAdapter<DressSkill> {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is DressSkillAdapter && runtimeType == other.runtimeType && typeId == other.typeId;
+      other is DressSkillAdapter &&
+          runtimeType == other.runtimeType &&
+          typeId == other.typeId;
 }
