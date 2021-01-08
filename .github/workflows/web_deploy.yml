@@ -1,4 +1,4 @@
-name: Gh-Pages
+name: Gh-Pages-Flutter
 
 on:
   push:
