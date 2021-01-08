@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:mgcm_tools/db/CSVToModel.dart';
@@ -8,13 +9,13 @@ import 'package:mgcm_tools/screens/DressesPage.dart';
 import 'package:mgcm_tools/screens/HomePage.dart';
 import 'package:mgcm_tools/screens/SettingsPage.dart';
 import 'package:mgcm_tools/screens/SkillsPage.dart';
-import 'package:path_provider/path_provider.dart' as path_provider;
+import 'package:hive_flutter/hive_flutter.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  final appDocumentDirectory = await path_provider.getApplicationDocumentsDirectory();
-  Hive.init(appDocumentDirectory.path);
+  Hive.initFlutter();
+
   Hive.registerAdapter<DressSkill>(DressSkillAdapter());
   Hive.registerAdapter<Dress>(DressAdapter());
   Hive.registerAdapter<SkillTargetType>(SkillTargetTypeAdapter());

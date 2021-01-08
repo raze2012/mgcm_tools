@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 class AppDrawer extends Drawer {
@@ -57,15 +58,18 @@ class AppDrawer extends Drawer {
             indent: 10,
             endIndent: 10,
           ),
-          ListTile(
-              leading: Icon(Icons.settings),
-              title: Text('Settings'),
-              onTap: () {
-                Navigator.pop(context);
-                if (currentRoute != '/settings') {
-                  Navigator.pushNamed(context, '/settings');
-                }
-              }),
+          Visibility(
+              visible: !kIsWeb,
+            child: ListTile(
+                leading: Icon(Icons.settings),
+                title: Text('Settings'),
+                onTap: () {
+                  Navigator.pop(context);
+                  if (currentRoute != '/settings') {
+                    Navigator.pushNamed(context, '/settings');
+                  }
+                }),
+          ),
           // ListTile
           // (
           //     leading: Icon(Icons.info_outline),
