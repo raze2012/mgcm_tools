@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_search_bar/flutter_search_bar.dart';
 import 'package:mgcm_tools/model/DressSort.dart';
-import 'package:mgcm_tools/widgets/Dress/DressDB.dart';
+import 'package:mgcm_tools/widgets/dress/DressDB.dart';
 import 'package:mgcm_tools/widgets/common/AppDrawer.dart';
 import 'package:mgcm_tools/widgets/common/SilverGridDelegateCustomHeight.dart';
 import 'package:tuple/tuple.dart';
