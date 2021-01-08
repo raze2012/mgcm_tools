@@ -14,5 +14,3 @@ jobs:
         with:
           channel: 'beta'
       - uses: erickzanardo/flutter-gh-pages@v2
-        with:
-          workingDir: mgcm_tools
