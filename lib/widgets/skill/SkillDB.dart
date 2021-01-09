@@ -84,7 +84,9 @@ class SkillDB extends StatelessWidget {
     //return true if there's nothing to check
     if (clearFilter) return true;
 
-    var statusList = statuses.split(',').map((status) => status.trim().replaceAll(' ', '_').toLowerCase());
+    var statusList = statuses
+        .split(',')
+        .map((status) => status.trim().replaceAll(' ', '_').toLowerCase());
 
     bool hasStatus = true;
     for (var filterStatus in filter.where((s) => s.item2 == true)) {
@@ -96,82 +98,84 @@ class SkillDB extends StatelessWidget {
 
   Widget build(BuildContext context) {
     var dressDB = Hive.box<Dress>('dresses');
+    var skillDB = Hive.box<DressSkill>('skills');
 
-    return ValueListenableBuilder(
-        valueListenable: Hive.box<DressSkill>('skills').listenable(),
-        builder: (context, Box<DressSkill> box, widget) {
-          Iterable<DressSkill> filteredBox;
+    Iterable<DressSkill> filteredBox = skillDB.values.where((skill) {
+      var skillOwnerName = skill.ownerDressName.toLowerCase();
+      var skillName = skill.name.toLowerCase();
+      var query = nameQuery.toLowerCase();
+      var skillTargetFull = skill.targetType.toString();
+      var skillTarget =
+          skillTargetFull.substring(skillTargetFull.indexOf('.') + 1);
+      var attackKind = skill.isAttack ? "Attack" : "NonAttack";
+      var specialMod = "";
+      if (skill.hpMod != 0) specialMod = "HP";
+      if (skill.defMod != 0) specialMod = "DEF";
+      if (skill.spdMod != 0) specialMod = "SPD";
+      if (skill.enemyHPMod != 0) specialMod = "Enemy HP";
+      if (skill.enemySPDMod != 0) specialMod = "Enemy SPD";
 
-          filteredBox = box.values.where((skill) {
-            var skillOwnerName = skill.ownerDressName.toLowerCase();
-            var skillName = skill.name.toLowerCase();
-            var query = nameQuery.toLowerCase();
-            var skillTargetFull = skill.targetType.toString();
-            var skillTarget = skillTargetFull.substring(skillTargetFull.indexOf('.') + 1);
-            var attackKind = skill.isAttack ? "Attack" : "NonAttack";
-            var specialMod = "";
-            if (skill.hpMod != 0) specialMod = "HP";
-            if (skill.defMod != 0) specialMod = "DEF";
-            if (skill.spdMod != 0) specialMod = "SPD";
-            if (skill.enemyHPMod != 0) specialMod = "Enemy HP";
-            if (skill.enemySPDMod != 0) specialMod = "Enemy SPD";
+      var nameFilter = nameQuery.isEmpty
+          ? true
+          : skillOwnerName.contains(query) || skillName.contains(query);
+      var propFilters = matchFilter(
+              skill.attribute.toName(), attributeFilter) &&
+          matchFilter(
+              skill.skillOwner.toFirstName().toLowerCase(), characterFilter) &&
+          matchFilter(skillTarget, targetFilter) &&
+          matchFilter(attackKind, attackFilter) &&
+          matchFilter(specialMod, specialFilter);
 
-            var nameFilter = nameQuery.isEmpty ? true : skillOwnerName.contains(query) || skillName.contains(query);
-            var propFilters = matchFilter(skill.attribute.toName(), attributeFilter) &&
-                matchFilter(skill.skillOwner.toFirstName().toLowerCase(), characterFilter) &&
-                matchFilter(skillTarget, targetFilter) &&
-                matchFilter(attackKind, attackFilter) &&
-                matchFilter(specialMod, specialFilter);
+      var buffFilters = hasStatus(skill.buffs, buffFilter) &&
+          hasStatus(skill.debuffs, debuffFilter);
 
-            var buffFilters = hasStatus(skill.buffs, buffFilter) && hasStatus(skill.debuffs, debuffFilter);
+      return nameFilter && propFilters && buffFilters;
+    });
 
-            return nameFilter && propFilters && buffFilters;
-          });
+    if (filteredBox.isEmpty)
+      return Center(
+        child: Text("No skills"),
+      );
 
-          if (filteredBox.isEmpty)
-            return Center(
-              child: Text("No skills"),
-            );
+    var skills = filteredBox.toList();
+    skills.sort(skillSort);
+    if (!ascending) skills = skills.reversed.toList();
 
-          var skills = filteredBox.toList();
-          skills.sort(skillSort);
-          if (!ascending) skills = skills.reversed.toList();
-
-          switch (mode) {
-            case 1:
-              return ListView.builder(
-                  itemCount: skills.length,
-                  itemBuilder: (context, index) {
-                    return SkillRowEnhance(skills[index]);
-                  });
-              break;
-            case 2:
-              return ListView.builder(
-                  itemCount: skills.length,
-                  itemBuilder: (context, index) {
-                    return SkillRowAllMods(skills[index]);
-                  });
-            default:
-              return ListView.builder(
-                itemCount: skills.length,
-                itemBuilder: (context, index) {
-                  var skill = skills[index];
-                  switch (sortBy) {
-                    case SkillSort.SkillMod:
-                      return SkillRowMod(skill);
-                    case SkillSort.NumHits:
-                      return SkillRowHitCount(skill);
-                    case SkillSort.DPS:
-                      return SkillRowDPS(skill);
-                    default:
-                      return SkillRow(
-                          skill,
-                          dressDB.values
-                              .firstWhere((dress) => skill.ownerDressName.toLowerCase() == dress.name.toLowerCase()));
-                  }
-                },
-              );
-          }
-        });
+    switch (mode) {
+      case 1:
+        return ListView.builder(
+            itemCount: skills.length,
+            itemBuilder: (context, index) {
+              return SkillRowEnhance(skills[index]);
+            });
+        break;
+      case 2:
+        return ListView.builder(
+            itemCount: skills.length,
+            itemBuilder: (context, index) {
+              return SkillRowAllMods(skills[index]);
+            });
+      default:
+        return ListView.builder(
+          itemCount: skills.length,
+          itemBuilder: (context, index) {
+            var skill = skills[index];
+            switch (sortBy) {
+              case SkillSort.SkillMod:
+                return SkillRowMod(skill);
+              case SkillSort.NumHits:
+                return SkillRowHitCount(skill);
+              case SkillSort.DPS:
+                return SkillRowDPS(skill);
+              default:
+                return SkillRow(
+                    skill,
+                    dressDB.values.firstWhere((dress) =>
+                        skill.ownerDressName.toLowerCase() ==
+                        dress.name.toLowerCase()));
+            }
+          },
+        );
+    }
   }
 }

@@ -75,53 +75,61 @@ class DressDB extends StatelessWidget {
   }
 
   Widget build(BuildContext context) {
-    return ValueListenableBuilder(
-        valueListenable: Hive.box<Dress>('dresses').listenable(),
-        builder: (context, Box<Dress> box, widget) {
-          Iterable<Dress> filteredBox;
+    var dressDB = Hive.box<Dress>('dresses').values;
 
-          filteredBox = box.values.where((dress) {
-            var nameFilter = nameQuery.isEmpty ? true : dress.name.toLowerCase().contains(nameQuery.toLowerCase());
-            var propFilters = matchFilter(dress.rarity, rarityFilter) &&
-                matchFilter(dress.type.toLowerCase(), typeFilter) &&
-                matchFilter(dress.attribute.toName(), attributeFilter) &&
-                matchFilter(dress.owner.toFirstName().toLowerCase(), characterFilter);
+    Iterable<Dress> filteredBox;
 
-            return nameFilter && propFilters;
-          });
+    filteredBox = dressDB..where((dress) {
+      var nameFilter = nameQuery.isEmpty
+          ? true
+          : dress.name.toLowerCase().contains(nameQuery.toLowerCase());
+      var propFilters = matchFilter(dress.rarity, rarityFilter) &&
+          matchFilter(dress.type.toLowerCase(), typeFilter) &&
+          matchFilter(dress.attribute.toName(), attributeFilter) &&
+          matchFilter(dress.owner.toFirstName().toLowerCase(), characterFilter);
 
-          if (filteredBox.isEmpty)
-            return Center(
-              child: Text("No dresses"),
-            );
+      return nameFilter && propFilters;
+    });
 
-          var dresses = filteredBox.toList();
-          dresses.sort(dressSort);
-          if (!ascending) dresses = dresses.reversed.toList();
+    if (filteredBox.isEmpty)
+      return Center(
+        child: Text("No dresses"),
+      );
 
-          switch (mode) {
-            case 0:
-              switch (sortBy) {
-                case DressSort.HP:
-                case DressSort.ATK:
-                case DressSort.DEF:
-                case DressSort.SPD:
-                case DressSort.FCS:
-                case DressSort.RES:
-                  return ListView(children: <Widget>[for (var dress in dresses) DressRowSingleStat(dress, sortBy)]);
-                  break;
-                default:
-                  return ListView(children: <Widget>[for (var dress in dresses) DressRow(dress)]);
-              }
-              break;
-            case 1:
-              return ListView(children: <Widget>[for (var dress in dresses) DressRowStats(dress, sortBy)]);
-              break;
-            case 2:
-              return ListView(children: <Widget>[for (var dress in dresses) DressRowSkill(dress)]);
-            default:
-              return ListView(children: <Widget>[for (var dress in dresses) DressRow(dress)]);
-          }
-        });
+    var dresses = dressDB.toList();
+    dresses.sort(dressSort);
+    if (!ascending) dressDB = dresses.reversed.toList();
+
+    switch (mode) {
+      case 0:
+        switch (sortBy) {
+          case DressSort.HP:
+          case DressSort.ATK:
+          case DressSort.DEF:
+          case DressSort.SPD:
+          case DressSort.FCS:
+          case DressSort.RES:
+            return ListView(children: <Widget>[
+              for (var dress in dressDB) DressRowSingleStat(dress, sortBy)
+            ]);
+            break;
+          default:
+            return ListView(
+                children: <Widget>[for (var dress in dressDB) DressRow(dress)]);
+        }
+        break;
+      case 1:
+        return ListView(children: <Widget>[
+          for (var dress in dressDB) DressRowStats(dress, sortBy)
+        ]);
+        break;
+      case 2:
+        return ListView(children: <Widget>[
+          for (var dress in dressDB) DressRowSkill(dress)
+        ]);
+      default:
+        return ListView(
+            children: <Widget>[for (var dress in dressDB) DressRow(dress)]);
+    }
   }
 }

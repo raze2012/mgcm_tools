@@ -14,7 +14,7 @@ import 'package:hive_flutter/hive_flutter.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  Hive.initFlutter();
+  await Hive.initFlutter();
 
   Hive.registerAdapter<DressSkill>(DressSkillAdapter());
   Hive.registerAdapter<Dress>(DressAdapter());

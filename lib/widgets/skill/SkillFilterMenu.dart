@@ -47,6 +47,7 @@ class _SkillFilterMenuState extends State<SkillFilterMenu> {
                 setState(() {
                   widget.parent.debuffs[i] =
                       Tuple2<String, bool>(widget.parent.debuffs[i].item1, !widget.parent.debuffs[i].item2);
+                  widget.parent.setState(() {});
                 });
               },
             ),
