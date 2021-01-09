@@ -15,6 +15,7 @@ jobs:
           channel: 'beta'
       - uses: erickzanardo/flutter-gh-pages@v2
       - uses: jacobtomlinson/gha-find-replace@master
-          with:
-            find: "<base href=\"/\">"
-            replace: "<base href=\"/mgcm_tools/\">"
+        with:
+          find: "<base href=\"/\">"
+          replace: "<base href=\"/mgcm_tools/\">"
+          inckude: "index.html"
