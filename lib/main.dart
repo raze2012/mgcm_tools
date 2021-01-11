@@ -5,10 +5,10 @@ import 'package:mgcm_tools/db/CSVToModel.dart';
 import 'package:mgcm_tools/model/Dress.dart';
 import 'package:mgcm_tools/model/DressSkill.dart';
 import 'package:mgcm_tools/model/ModelEnums.dart';
-import 'package:mgcm_tools/screens/DressesPage.dart';
-import 'package:mgcm_tools/screens/HomePage.dart';
+import 'package:mgcm_tools/screens/common/DressesPage.dart';
+import 'package:mgcm_tools/screens/common/HomePage.dart';
 import 'package:mgcm_tools/screens/SettingsPage.dart';
-import 'package:mgcm_tools/screens/SkillsPage.dart';
+import 'package:mgcm_tools/screens/common/SkillsPage.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
 void main() async {

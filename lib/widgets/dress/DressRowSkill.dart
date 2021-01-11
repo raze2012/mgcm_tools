@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:mgcm_tools/model/Dress.dart';
 import 'package:mgcm_tools/model/DressSkill.dart';
-import 'package:mgcm_tools/screens/DressDetailPage.dart';
+import 'package:mgcm_tools/screens/common/DressDetailPage.dart';
 import 'package:mgcm_tools/widgets/dress/SkillPopup.dart';
 
 class DressRowSkill extends StatelessWidget {
@@ -31,7 +31,7 @@ class DressRowSkill extends StatelessWidget {
           onTap: () {
             Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => DressDetailPage(title: dress.name)),
+              MaterialPageRoute(builder: (context) => DressDetailPage(dressName: dress.name)),
             );
           },
           child: Row(children: <Widget>[

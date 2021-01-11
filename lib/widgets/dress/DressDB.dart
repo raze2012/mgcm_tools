@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:hive/hive.dart';
-import 'package:hive_flutter/hive_flutter.dart';
 import 'package:mgcm_tools/model/Dress.dart';
 import 'package:mgcm_tools/model/DressSort.dart';
 import 'package:mgcm_tools/model/ModelEnums.dart';
@@ -8,35 +8,19 @@ import 'package:mgcm_tools/widgets/dress/DressRowSingleStat.dart';
 import 'package:mgcm_tools/widgets/dress/DressRowSkill.dart';
 import 'package:mgcm_tools/widgets/dress/DressRowStats.dart';
 import 'package:tuple/tuple.dart';
-
+import 'package:mgcm_tools/widgets/dress/DressFilterModel.dart';
 import 'DressRow.dart';
 
+
 class DressDB extends StatelessWidget {
-  final String nameQuery;
-  final DressSort sortBy;
-  final bool ascending;
 
-  //basic, stats, skills
-  final int mode;
-  final List<Tuple2<String, bool>> rarityFilter;
-  final List<Tuple2<String, bool>> typeFilter;
-  final List<Tuple2<String, bool>> attributeFilter;
-  final List<Tuple2<String, bool>> characterFilter;
-
+  final DressFilterModel filterModel;
   const DressDB(
-      {Key key,
-      this.nameQuery,
-      this.sortBy,
-      this.ascending,
-      this.rarityFilter,
-      this.typeFilter,
-      this.attributeFilter,
-      this.characterFilter,
-      this.mode})
+      this.filterModel,{Key key})
       : super(key: key);
 
   int dressSort(Dress a, Dress b) {
-    switch (sortBy) {
+    switch (filterModel.sortBy) {
       case DressSort.DressNumber:
         return a.id - b.id;
       case DressSort.Type:
@@ -75,34 +59,37 @@ class DressDB extends StatelessWidget {
   }
 
   Widget build(BuildContext context) {
+    print("rebuild");
     var dressDB = Hive.box<Dress>('dresses').values;
 
-    Iterable<Dress> filteredBox;
-
-    filteredBox = dressDB..where((dress) {
-      var nameFilter = nameQuery.isEmpty
+    var filteredDressDB = dressDB.where((dress) {
+      var nameFilter = filterModel.nameQuery.isEmpty
           ? true
-          : dress.name.toLowerCase().contains(nameQuery.toLowerCase());
-      var propFilters = matchFilter(dress.rarity, rarityFilter) &&
-          matchFilter(dress.type.toLowerCase(), typeFilter) &&
-          matchFilter(dress.attribute.toName(), attributeFilter) &&
-          matchFilter(dress.owner.toFirstName().toLowerCase(), characterFilter);
+          : dress.name.toLowerCase().contains(filterModel.nameQuery.toLowerCase());
+      var propFilters = matchFilter(dress.rarity, filterModel.rarities) &&
+          matchFilter(dress.type.toLowerCase(), filterModel.types) &&
+          matchFilter(dress.attribute.toName(), filterModel.attributes) &&
+          matchFilter(dress.owner.toFirstName().toLowerCase(), filterModel.characters);
 
       return nameFilter && propFilters;
     });
 
-    if (filteredBox.isEmpty)
+    if (filteredDressDB.isEmpty)
       return Center(
         child: Text("No dresses"),
       );
 
-    var dresses = dressDB.toList();
-    dresses.sort(dressSort);
-    if (!ascending) dressDB = dresses.reversed.toList();
+    var filteredDresses = filteredDressDB.toList();
+    filteredDresses.sort(dressSort);
+    if (!filterModel.ascending) filteredDresses = filteredDresses.reversed.toList();
 
-    switch (mode) {
+    filteredDresses.forEach((dress) {
+      print(matchFilter(dress.rarity, filterModel.rarities).toString());
+    });
+
+    switch (filterModel.mode) {
       case 0:
-        switch (sortBy) {
+        switch (filterModel.sortBy) {
           case DressSort.HP:
           case DressSort.ATK:
           case DressSort.DEF:
@@ -110,26 +97,26 @@ class DressDB extends StatelessWidget {
           case DressSort.FCS:
           case DressSort.RES:
             return ListView(children: <Widget>[
-              for (var dress in dressDB) DressRowSingleStat(dress, sortBy)
+              for (var dress in filteredDresses) DressRowSingleStat(dress, filterModel.sortBy)
             ]);
             break;
           default:
             return ListView(
-                children: <Widget>[for (var dress in dressDB) DressRow(dress)]);
+                children: <Widget>[for (var dress in filteredDresses) DressRow(dress)]);
         }
         break;
       case 1:
         return ListView(children: <Widget>[
-          for (var dress in dressDB) DressRowStats(dress, sortBy)
+          for (var dress in filteredDresses) DressRowStats(dress, filterModel.sortBy)
         ]);
         break;
       case 2:
         return ListView(children: <Widget>[
-          for (var dress in dressDB) DressRowSkill(dress)
+          for (var dress in filteredDresses) DressRowSkill(dress)
         ]);
       default:
         return ListView(
-            children: <Widget>[for (var dress in dressDB) DressRow(dress)]);
+            children: <Widget>[for (var dress in filteredDresses) DressRow(dress)]);
     }
   }
 }

@@ -7,27 +7,30 @@ import 'package:mgcm_tools/widgets/common/AppDrawer.dart';
 import 'package:mgcm_tools/widgets/common/SilverGridDelegateCustomHeight.dart';
 import 'package:mgcm_tools/widgets/skill/SkillCard.dart';
 
-class DressDetailPage extends StatefulWidget {
-  DressDetailPage({Key key, this.title}) : super(key: key);
+class DressDetailPageLarge extends StatefulWidget {
+  DressDetailPageLarge({Key key, this.dressName}) : super(key: key);
 
-  final String title;
+  final String dressName;
 
   @override
-  _DressDetailPageState createState() => _DressDetailPageState();
+  _DressDetailPageLargeState createState() => _DressDetailPageLargeState(dressName);
 }
 
-class _DressDetailPageState extends State<DressDetailPage> {
+class _DressDetailPageLargeState extends State<DressDetailPageLarge> {
   Dress dress;
   DressSkill s1;
   DressSkill s2;
   DressSkill s3;
   DressSkill s4;
   final formatter = new NumberFormat("#,###");
+  final String dressName;
 
   int _curLevel = 80;
   List<bool> _levelToggles = [false, false, false, false, false, false, true];
   List<int> _levels = [1, 30, 60, 65, 70, 75, 80];
   List<String> _stats = [];
+
+  _DressDetailPageLargeState(this.dressName);
 
   void updateStatsTable() {
     _stats.clear();
@@ -56,7 +59,7 @@ class _DressDetailPageState extends State<DressDetailPage> {
   void initState() {
     super.initState();
     dress = Hive.box<Dress>("dresses").values.firstWhere((e) {
-      return e.name.toLowerCase() == widget.title.toLowerCase();
+      return e.name.toLowerCase() == dressName.toLowerCase();
     }, orElse: () => null);
 
     if (dress != null) {
@@ -85,7 +88,7 @@ class _DressDetailPageState extends State<DressDetailPage> {
       return Scaffold(
         drawer: new AppDrawer(),
         appBar: AppBar(
-          title: Text(widget.title),
+          title: Text(dressName),
         ),
         body: Center(
           child: Text(
@@ -98,7 +101,7 @@ class _DressDetailPageState extends State<DressDetailPage> {
     return Scaffold(
         drawer: new AppDrawer(),
         appBar: AppBar(
-          title: Text(widget.title),
+          title: Text(dressName),
         ),
         body: ListView(
           padding: EdgeInsets.all(10),

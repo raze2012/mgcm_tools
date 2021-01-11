@@ -1,6 +1,5 @@
 import 'package:flutter/cupertino.dart';
 import 'package:hive/hive.dart';
-import 'package:hive_flutter/hive_flutter.dart';
 import 'package:mgcm_tools/model/Dress.dart';
 import 'package:mgcm_tools/model/DressSkill.dart';
 import 'package:mgcm_tools/model/DressSort.dart';
@@ -12,42 +11,23 @@ import 'package:mgcm_tools/widgets/skill/SkillRowEnhance.dart';
 import 'package:mgcm_tools/widgets/skill/SkillRowHitCount.dart';
 import 'package:mgcm_tools/widgets/skill/SkillRowMod.dart';
 import 'package:tuple/tuple.dart';
+import 'package:mgcm_tools/widgets/skill/SkillFilterModel.dart';
 
 class SkillDB extends StatelessWidget {
-  final String nameQuery;
-  final SkillSort sortBy;
-  final bool ascending;
 
-  //info, enhance, skill mod
-  final int mode;
-  final List<Tuple2<String, bool>> attributeFilter;
-  final List<Tuple2<String, bool>> characterFilter;
-  final List<Tuple2<String, bool>> targetFilter;
-  final List<Tuple2<String, bool>> buffFilter;
-  final List<Tuple2<String, bool>> debuffFilter;
-  final List<Tuple2<String, bool>> attackFilter;
-  final List<Tuple2<String, bool>> specialFilter;
+  final SkillFilterModel filterModel;
 
   const SkillDB(
+      this.filterModel,
       {Key key,
-      this.nameQuery,
-      this.sortBy,
-      this.ascending,
-      this.attributeFilter,
-      this.characterFilter,
-      this.targetFilter,
-      this.buffFilter,
-      this.debuffFilter,
-      this.attackFilter,
-      this.specialFilter,
-      this.mode})
+      })
       : super(key: key);
 
   int skillSort(DressSkill a, DressSkill b) {
     double dpsA = a.skillMod * a.numHits;
     double dpsB = b.skillMod * b.numHits;
 
-    switch (sortBy) {
+    switch (filterModel.sortBy) {
       case SkillSort.ID:
         return a.id - b.id;
       case SkillSort.Attribute:
@@ -103,7 +83,7 @@ class SkillDB extends StatelessWidget {
     Iterable<DressSkill> filteredBox = skillDB.values.where((skill) {
       var skillOwnerName = skill.ownerDressName.toLowerCase();
       var skillName = skill.name.toLowerCase();
-      var query = nameQuery.toLowerCase();
+      var query = filterModel.nameQuery.toLowerCase();
       var skillTargetFull = skill.targetType.toString();
       var skillTarget =
           skillTargetFull.substring(skillTargetFull.indexOf('.') + 1);
@@ -115,19 +95,19 @@ class SkillDB extends StatelessWidget {
       if (skill.enemyHPMod != 0) specialMod = "Enemy HP";
       if (skill.enemySPDMod != 0) specialMod = "Enemy SPD";
 
-      var nameFilter = nameQuery.isEmpty
+      var nameFilter = filterModel.nameQuery.isEmpty
           ? true
           : skillOwnerName.contains(query) || skillName.contains(query);
       var propFilters = matchFilter(
-              skill.attribute.toName(), attributeFilter) &&
+              skill.attribute.toName(), filterModel.attributes) &&
           matchFilter(
-              skill.skillOwner.toFirstName().toLowerCase(), characterFilter) &&
-          matchFilter(skillTarget, targetFilter) &&
-          matchFilter(attackKind, attackFilter) &&
-          matchFilter(specialMod, specialFilter);
+              skill.skillOwner.toFirstName().toLowerCase(), filterModel.characters) &&
+          matchFilter(skillTarget, filterModel.targetType) &&
+          matchFilter(attackKind, filterModel.attackKind) &&
+          matchFilter(specialMod, filterModel.specialMods);
 
-      var buffFilters = hasStatus(skill.buffs, buffFilter) &&
-          hasStatus(skill.debuffs, debuffFilter);
+      var buffFilters = hasStatus(skill.buffs, filterModel.buffs) &&
+          hasStatus(skill.debuffs, filterModel.debuffs);
 
       return nameFilter && propFilters && buffFilters;
     });
@@ -139,9 +119,11 @@ class SkillDB extends StatelessWidget {
 
     var skills = filteredBox.toList();
     skills.sort(skillSort);
-    if (!ascending) skills = skills.reversed.toList();
+    var dresses = dressDB.values.toList();
 
-    switch (mode) {
+    if (!filterModel.ascending) skills = skills.reversed.toList();
+
+    switch (filterModel.mode) {
       case 1:
         return ListView.builder(
             itemCount: skills.length,
@@ -160,7 +142,7 @@ class SkillDB extends StatelessWidget {
           itemCount: skills.length,
           itemBuilder: (context, index) {
             var skill = skills[index];
-            switch (sortBy) {
+            switch (filterModel.sortBy) {
               case SkillSort.SkillMod:
                 return SkillRowMod(skill);
               case SkillSort.NumHits:

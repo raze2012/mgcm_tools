@@ -1,19 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:mgcm_tools/model/ModelEnums.dart';
-import 'package:mgcm_tools/screens/SkillsPage.dart';
 import 'package:mgcm_tools/widgets/common/SilverGridDelegateCustomHeight.dart';
 import 'package:tuple/tuple.dart';
+import 'package:mgcm_tools/widgets/skill/SkillFilterModel.dart';
 
 class SkillFilterMenu extends StatefulWidget {
-  SkillFilterMenu({Key key, this.parent}) : super(key: key);
+  SkillFilterModel skillFilter;
+  Function(SkillFilterModel) parentCallback;
 
-  final SkillsPageState parent;
+  SkillFilterMenu(this.skillFilter,this.parentCallback,{Key key}): super(key: key);
 
   @override
-  _SkillFilterMenuState createState() => _SkillFilterMenuState();
+  _SkillFilterMenuState createState() => _SkillFilterMenuState(skillFilter);
 }
 
 class _SkillFilterMenuState extends State<SkillFilterMenu> {
+
+  SkillFilterModel model;
+  _SkillFilterMenuState(this.model);
+
   List<Widget> extraDebuffs(BuildContext context, StateSetter setState) {
     var mbd = Debuff.move_gauge_down.toString();
     var moveGaugeDown = mbd.substring(mbd.indexOf('.') + 1);
@@ -24,9 +29,9 @@ class _SkillFilterMenuState extends State<SkillFilterMenu> {
     var rb = Debuff.remove_buff.toString();
     var removeBuff = rb.substring(rb.indexOf('.') + 1);
 
-    var mgdIndex = widget.parent.debuffs.indexWhere((element) => element.item1 == moveGaugeDown);
-    var erIndex = widget.parent.debuffs.indexWhere((element) => element.item1 == extendRecast);
-    var rbIndex = widget.parent.debuffs.indexWhere((element) => element.item1 == removeBuff);
+    var mgdIndex =model.debuffs.indexWhere((element) => element.item1 == moveGaugeDown);
+    var erIndex =model.debuffs.indexWhere((element) => element.item1 == extendRecast);
+    var rbIndex =model.debuffs.indexWhere((element) => element.item1 == removeBuff);
 
     Widget row = Row(
         children: [mgdIndex, erIndex, rbIndex].map((i) {
@@ -35,19 +40,20 @@ class _SkillFilterMenuState extends State<SkillFilterMenu> {
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 10),
           child: Opacity(
-            opacity: widget.parent.debuffs[i].item2 ? 1.0 : 0.4,
+            opacity:model.debuffs[i].item2 ? 1.0 : 0.4,
             child: RaisedButton(
               child: Text(
-                widget.parent.debuffs[i].item1.replaceAll('_', ' '),
+               model.debuffs[i].item1.replaceAll('_', ' '),
                 style: Theme.of(context).textTheme.bodyText2.copyWith(color: Colors.white),
                 textAlign: TextAlign.center,
               ),
               color: Colors.red,
               onPressed: () {
                 setState(() {
-                  widget.parent.debuffs[i] =
-                      Tuple2<String, bool>(widget.parent.debuffs[i].item1, !widget.parent.debuffs[i].item2);
-                  widget.parent.setState(() {});
+                 model.debuffs[i] =
+                      Tuple2<String, bool>(model.debuffs[i].item1, !model.debuffs[i].item2);
+
+                 widget.parentCallback(model);
                 });
               },
             ),
@@ -69,9 +75,9 @@ class _SkillFilterMenuState extends State<SkillFilterMenu> {
     var rd = Buff.remove_debuff.toString();
     var removeDebuff = rd.substring(rd.indexOf('.') + 1);
 
-    var mgbIndex = widget.parent.buffs.indexWhere((element) => element.item1 == moveGaugeBoost);
-    var rrIndex = widget.parent.buffs.indexWhere((element) => element.item1 == reduceRecast);
-    var rdIndex = widget.parent.buffs.indexWhere((element) => element.item1 == removeDebuff);
+    var mgbIndex =model.buffs.indexWhere((element) => element.item1 == moveGaugeBoost);
+    var rrIndex =model.buffs.indexWhere((element) => element.item1 == reduceRecast);
+    var rdIndex =model.buffs.indexWhere((element) => element.item1 == removeDebuff);
 
     Widget row = Row(
         children: [mgbIndex, rrIndex, rdIndex].map((i) {
@@ -80,19 +86,19 @@ class _SkillFilterMenuState extends State<SkillFilterMenu> {
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 10),
           child: Opacity(
-            opacity: widget.parent.buffs[i].item2 ? 1.0 : 0.4,
+            opacity:model.buffs[i].item2 ? 1.0 : 0.4,
             child: RaisedButton(
               child: Text(
-                widget.parent.buffs[i].item1.replaceAll('_', ' '),
+               model.buffs[i].item1.replaceAll('_', ' '),
                 style: Theme.of(context).textTheme.bodyText2.copyWith(color: Colors.white),
                 textAlign: TextAlign.center,
               ),
               color: Colors.blue,
               onPressed: () {
                 setState(() {
-                  widget.parent.buffs[i] =
-                      Tuple2<String, bool>(widget.parent.buffs[i].item1, !widget.parent.buffs[i].item2);
-                  widget.parent.setState(() {});
+                 model.buffs[i] =
+                      Tuple2<String, bool>(model.buffs[i].item1, !model.buffs[i].item2);
+                 widget.parentCallback(model);
                 });
               },
             ),
@@ -118,7 +124,7 @@ class _SkillFilterMenuState extends State<SkillFilterMenu> {
             onPressed: () {
               setState(() {
                 stateList[idx] = new Tuple2<String, bool>(stateList[idx].item1, !stateList[idx].item2);
-                widget.parent.setState(() {});
+               widget.parentCallback(model);
                 print(stateList);
               });
             },
@@ -150,7 +156,7 @@ class _SkillFilterMenuState extends State<SkillFilterMenu> {
                       )),
                   Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: makeToggles(widget.parent.attributes, "attribute", setState)),
+                      children: makeToggles(model.attributes, "attribute", setState)),
                   //character
                   Container(
                       margin: EdgeInsets.all(5),
@@ -171,7 +177,7 @@ class _SkillFilterMenuState extends State<SkillFilterMenu> {
                     physics: NeverScrollableScrollPhysics(),
                     itemCount: 12,
                     itemBuilder: (context, index) {
-                      return makeToggles(widget.parent.characters, "character", setState)[index];
+                      return makeToggles(model.characters, "character", setState)[index];
                     },
                   ),
                   //target type
@@ -190,23 +196,23 @@ class _SkillFilterMenuState extends State<SkillFilterMenu> {
                     physics: NeverScrollableScrollPhysics(),
                     gridDelegate: SliverGridDelegateWithFixedCrossAxisCountAndFixedHeight(
                         height: 50, crossAxisCount: 3, mainAxisSpacing: 5, crossAxisSpacing: 5),
-                    itemCount: widget.parent.targetType.length,
+                    itemCount:model.targetType.length,
                     itemBuilder: (context, i) {
                       return Opacity(
-                          opacity: widget.parent.targetType[i].item2 ? 1.0 : 0.4,
+                          opacity:model.targetType[i].item2 ? 1.0 : 0.4,
                           child: RaisedButton(
                             child: Text(
-                              widget.parent.targetType[i].item1,
+                             model.targetType[i].item1,
                               style: Theme.of(context).textTheme.bodyText2.copyWith(color: Colors.white),
                               textAlign: TextAlign.center,
                             ),
                             color: Colors.blue,
                             onPressed: () {
                               setState(() {
-                                widget.parent.targetType[i] = Tuple2<String, bool>(
-                                    widget.parent.targetType[i].item1, !widget.parent.targetType[i].item2);
-                                widget.parent.setState(() {});
-                                print(widget.parent.targetType);
+                               model.targetType[i] = Tuple2<String, bool>(
+                                   model.targetType[i].item1, !model.targetType[i].item2);
+                               widget.parentCallback(model);
+                                print(model.targetType);
                               });
                             },
                           ));
@@ -215,23 +221,23 @@ class _SkillFilterMenuState extends State<SkillFilterMenu> {
                   //attack kind (does it hit enemy or not)
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: widget.parent.attackKind.map((attackKind) {
-                      int i = widget.parent.attackKind.indexOf(attackKind);
+                    children:model.attackKind.map((attackKind) {
+                      int i =model.attackKind.indexOf(attackKind);
                       return Opacity(
-                          opacity: widget.parent.attackKind[i].item2 ? 1.0 : 0.4,
+                          opacity:model.attackKind[i].item2 ? 1.0 : 0.4,
                           child: RaisedButton(
                             child: Text(
-                              widget.parent.attackKind[i].item1,
+                             model.attackKind[i].item1,
                               style: Theme.of(context).textTheme.bodyText2.copyWith(color: Colors.white),
                               textAlign: TextAlign.center,
                             ),
                             color: Colors.lightGreen,
                             onPressed: () {
                               setState(() {
-                                widget.parent.attackKind[i] = Tuple2<String, bool>(
-                                    widget.parent.attackKind[i].item1, !widget.parent.attackKind[i].item2);
-                                widget.parent.setState(() {});
-                                print(widget.parent.attackKind);
+                               model.attackKind[i] = Tuple2<String, bool>(
+                                   model.attackKind[i].item1, !model.attackKind[i].item2);
+                               widget.parentCallback(model);
+                                print(model.attackKind);
                               });
                             },
                           ));
@@ -252,23 +258,23 @@ class _SkillFilterMenuState extends State<SkillFilterMenu> {
                     physics: NeverScrollableScrollPhysics(),
                     gridDelegate: SliverGridDelegateWithFixedCrossAxisCountAndFixedHeight(
                         height: 50, crossAxisCount: 3, mainAxisSpacing: 5, crossAxisSpacing: 5),
-                    itemCount: widget.parent.specialMods.length,
+                    itemCount:model.specialMods.length,
                     itemBuilder: (context, i) {
                       return Opacity(
-                          opacity: widget.parent.specialMods[i].item2 ? 1.0 : 0.4,
+                          opacity:model.specialMods[i].item2 ? 1.0 : 0.4,
                           child: RaisedButton(
                             child: Text(
-                              widget.parent.specialMods[i].item1,
+                             model.specialMods[i].item1,
                               style: Theme.of(context).textTheme.bodyText2.copyWith(color: Colors.white),
                               textAlign: TextAlign.center,
                             ),
                             color: Colors.blue,
                             onPressed: () {
                               setState(() {
-                                widget.parent.specialMods[i] = Tuple2<String, bool>(
-                                    widget.parent.specialMods[i].item1, !widget.parent.specialMods[i].item2);
-                                widget.parent.setState(() {});
-                                print(widget.parent.specialMods);
+                               model.specialMods[i] = Tuple2<String, bool>(
+                                   model.specialMods[i].item1, !model.specialMods[i].item2);
+                               widget.parentCallback(model);
+                                print(model.specialMods);
                               });
                             },
                           ));
@@ -292,9 +298,9 @@ class _SkillFilterMenuState extends State<SkillFilterMenu> {
                     ),
                     shrinkWrap: true,
                     physics: NeverScrollableScrollPhysics(),
-                    itemCount: widget.parent.buffs.length - 3,
+                    itemCount:model.buffs.length - 3,
                     itemBuilder: (context, index) {
-                      return makeToggles(widget.parent.buffs, "buff_debuff", setState)[index];
+                      return makeToggles(model.buffs, "buff_debuff", setState)[index];
                     },
                   ),
                   for (var widget in extraBuffs(context, setState)) widget,
@@ -316,9 +322,9 @@ class _SkillFilterMenuState extends State<SkillFilterMenu> {
                     ),
                     shrinkWrap: true,
                     physics: NeverScrollableScrollPhysics(),
-                    itemCount: widget.parent.debuffs.length - 3,
+                    itemCount:model.debuffs.length - 3,
                     itemBuilder: (context, index) {
-                      return makeToggles(widget.parent.debuffs, "buff_debuff", setState)[index];
+                      return makeToggles(model.debuffs, "buff_debuff", setState)[index];
                     },
                   ),
                   for (var widget in extraDebuffs(context, setState)) widget,
@@ -338,18 +344,18 @@ class _SkillFilterMenuState extends State<SkillFilterMenu> {
                   child: new Text('Reset'),
                   onPressed: () {
                     setState(() {
-                      for (int i = 0; i < widget.parent.attributes.length; i++)
-                        widget.parent.attributes[i] = Tuple2<String, bool>(widget.parent.attributes[i].item1, false);
-                      for (int i = 0; i < widget.parent.characters.length; i++)
-                        widget.parent.characters[i] = Tuple2<String, bool>(widget.parent.characters[i].item1, false);
-                      for (int i = 0; i < widget.parent.targetType.length; i++)
-                        widget.parent.targetType[i] = Tuple2<String, bool>(widget.parent.targetType[i].item1, false);
-                      for (int i = 0; i < widget.parent.buffs.length; i++)
-                        widget.parent.buffs[i] = Tuple2<String, bool>(widget.parent.buffs[i].item1, false);
-                      for (int i = 0; i < widget.parent.debuffs.length; i++)
-                        widget.parent.debuffs[i] = Tuple2<String, bool>(widget.parent.debuffs[i].item1, false);
+                      for (int i = 0; i <model.attributes.length; i++)
+                       model.attributes[i] = Tuple2<String, bool>(model.attributes[i].item1, false);
+                      for (int i = 0; i <model.characters.length; i++)
+                       model.characters[i] = Tuple2<String, bool>(model.characters[i].item1, false);
+                      for (int i = 0; i <model.targetType.length; i++)
+                       model.targetType[i] = Tuple2<String, bool>(model.targetType[i].item1, false);
+                      for (int i = 0; i <model.buffs.length; i++)
+                       model.buffs[i] = Tuple2<String, bool>(model.buffs[i].item1, false);
+                      for (int i = 0; i <model.debuffs.length; i++)
+                       model.debuffs[i] = Tuple2<String, bool>(model.debuffs[i].item1, false);
 
-                      widget.parent.setState(() {});
+                     widget.parentCallback(model);
                     });
                   },
                 ),
@@ -363,4 +369,6 @@ class _SkillFilterMenuState extends State<SkillFilterMenu> {
       ),
     );
   }
+
+
 }

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:mgcm_tools/model/Dress.dart';
 import 'package:mgcm_tools/model/DressSort.dart';
-import 'package:mgcm_tools/screens/DressDetailPage.dart';
+import 'package:mgcm_tools/screens/common/DressDetailPage.dart';
 
 class DressRowSingleStat extends StatelessWidget {
   final Dress dress;
@@ -44,7 +44,7 @@ class DressRowSingleStat extends StatelessWidget {
           onTap: () {
             Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => DressDetailPage(title: dress.name)),
+              MaterialPageRoute(builder: (context) => DressDetailPage(dressName: dress.name)),
             );
           },
           child: Row(children: <Widget>[

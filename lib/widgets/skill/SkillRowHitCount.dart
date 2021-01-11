@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mgcm_tools/model/DressSkill.dart';
-import 'package:mgcm_tools/screens/DressDetailPage.dart';
+import 'package:mgcm_tools/screens/common/DressDetailPage.dart';
 
 class SkillRowHitCount extends StatelessWidget {
   final DressSkill skill;
@@ -18,7 +18,7 @@ class SkillRowHitCount extends StatelessWidget {
           onTap: () {
             Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => DressDetailPage(title: skill.ownerDressName)),
+              MaterialPageRoute(builder: (context) => DressDetailPage(dressName: skill.ownerDressName)),
             );
           },
           child: Row(children: <Widget>[

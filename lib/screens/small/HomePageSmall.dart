@@ -1,19 +1,19 @@
 import 'package:flutter/material.dart';
-import 'package:mgcm_tools/screens/DressesPage.dart';
-import 'package:mgcm_tools/screens/SkillsPage.dart';
+import 'package:mgcm_tools/screens/common/DressesPage.dart';
+import 'package:mgcm_tools/screens/common/SkillsPage.dart';
 import 'package:mgcm_tools/widgets/common/AppDrawer.dart';
 import 'package:mgcm_tools/widgets/common/HomeCard.dart';
 
-class HomePage extends StatefulWidget {
-  HomePage({Key key, this.title}) : super(key: key);
+class HomePageSmall extends StatefulWidget {
+  HomePageSmall({Key key, this.title}) : super(key: key);
 
   final String title;
 
   @override
-  _HomePageState createState() => _HomePageState();
+  _HomePageSmallState createState() => _HomePageSmallState();
 }
 
-class _HomePageState extends State<HomePage> {
+class _HomePageSmallState extends State<HomePageSmall> {
   var _imagePaths = ["assets/home/dresses.png", "assets/home/skills.png"];
   var _titles = ["Dress Catalog", "Skills List"];
   var _descriptions = ["Look up dresses and their stats and skills", "Look up skills, enhance levels, power, and more"];

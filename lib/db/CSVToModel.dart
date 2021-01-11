@@ -35,6 +35,7 @@ class CSVToModel {
       List<String> errorMessage = [];
       //in case I'm dumb, if default \r\n line endings fails, it should be \n instead
       if (!CSVValidator.validateSkillHeaders(conversion, errorMessage)) {
+        errorMessage.clear();
         conversion = CsvToListConverter().convert(csv, eol: "\n", shouldParseNumbers: true);
       }
       return conversion;
@@ -45,7 +46,8 @@ class CSVToModel {
 
       List<String> errorMessage = [];
       //in case I'm dumb, if default \r\n line endings fails, it should be \n instead
-      if (!CSVValidator.validateSkillHeaders(conversion, errorMessage)) {
+      if (!CSVValidator.validateDressHeaders(conversion, errorMessage)) {
+        errorMessage.clear();
         conversion = CsvToListConverter().convert(csv, eol: "\n", shouldParseNumbers: true);
       }
       return conversion;
