@@ -26,7 +26,7 @@ class SkillsPageSmallState extends State<SkillsPageSmall> {
     return new AppBar(title: new Text(widget.title), actions: [searchBar.getSearchAction(context)]);
   }
 
-  SkillsPageLargeState() {
+  SkillsPageSmallState() {
     filterModel = new SkillFilterModel();
 
     searchBar = new SearchBar(
