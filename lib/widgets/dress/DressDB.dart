@@ -59,7 +59,6 @@ class DressDB extends StatelessWidget {
   }
 
   Widget build(BuildContext context) {
-    print("rebuild");
     var dressDB = Hive.box<Dress>('dresses').values;
 
     var filteredDressDB = dressDB.where((dress) {
@@ -82,10 +81,6 @@ class DressDB extends StatelessWidget {
     var filteredDresses = filteredDressDB.toList();
     filteredDresses.sort(dressSort);
     if (!filterModel.ascending) filteredDresses = filteredDresses.reversed.toList();
-
-    filteredDresses.forEach((dress) {
-      print(matchFilter(dress.rarity, filterModel.rarities).toString());
-    });
 
     switch (filterModel.mode) {
       case 0:

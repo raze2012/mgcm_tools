@@ -5,7 +5,7 @@ import 'package:mgcm_tools/db/CSVValidator.dart';
 import "package:path/path.dart" show dirname, join;
 
 /*
-    convience tool for development. uses provided google sheet URL and saves the csv used for app
+    convience tool for development. uses provided google sheet URL and saves the csv used for app. execute in project directory
  */
 void main() async {
   writeToCSV(CSVValidator.dressURL, "assets/dresses.csv");

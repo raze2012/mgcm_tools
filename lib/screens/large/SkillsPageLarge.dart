@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_search_bar/flutter_search_bar.dart';
 import 'package:mgcm_tools/model/DressSort.dart';
 import 'package:mgcm_tools/widgets/common/AppDrawer.dart';
+import 'package:mgcm_tools/widgets/common/WebAppBar.dart';
 import 'package:mgcm_tools/widgets/skill/SkillDB.dart';
 import 'package:mgcm_tools/widgets/skill/SkillFilterMenu.dart';
 import 'package:mgcm_tools/widgets/skill/SkillFilterModel.dart';
@@ -23,7 +24,7 @@ class SkillsPageLargeState extends State<SkillsPageLarge> {
 
   AppBar buildAppBar(BuildContext context) {
     clearSearch();
-    return new AppBar(title: new Text(widget.title), actions: [searchBar.getSearchAction(context)]);
+    return AppBar(toolbarHeight: 70.0,title: WebAppBar('/skills'),actions: [searchBar.getSearchAction(context)]);
   }
 
   SkillsPageLargeState() {
@@ -93,12 +94,19 @@ class SkillsPageLargeState extends State<SkillsPageLarge> {
             context: context,
             builder: (context) {
               return StatefulBuilder(builder: (context, setState) {
-                return Dialog(
-                    insetPadding: EdgeInsets.symmetric(vertical: 20, horizontal: 15),
-                    child: SkillFilterMenu(filterModel,(model)
-                    {
-                      _udpate();
-                    }));
+                return Container(
+                  width: double.infinity,
+                  alignment: Alignment.center,
+                  child: ConstrainedBox(
+                    constraints: BoxConstraints(maxWidth: 1200),
+                    child: Dialog(
+                        insetPadding: EdgeInsets.symmetric(vertical: 20, horizontal: 15),
+                        child: SkillFilterMenu(filterModel,(model)
+                        {
+                          _udpate();
+                        })),
+                  ),
+                );
               });
             },
           );
@@ -111,58 +119,64 @@ class SkillsPageLargeState extends State<SkillsPageLarge> {
   Widget build(BuildContext context) {
     return Scaffold(
         key: _scaffoldKey,
-        drawer: new AppDrawer(
-          currentRoute: '/skills',
-        ),
         appBar: searchBar.build(context),
-        body: Column(
-          children: <Widget>[
-            filterBar(context, setState),
-            //display buttons
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                RaisedButton(
-                  textTheme: ButtonTextTheme.primary,
-                  child: Text("Info"),
-                  color: filterModel.displayMode[0] ? Colors.blueGrey : Colors.blue,
-                  onPressed: () {
-                    setState(() {
-                      filterModel.displayMode[0] = true;
-                      filterModel.displayMode[1] = false;
-                      filterModel.displayMode[2] = false;
-                    });
-                  },
+        body: Container(
+          width: double.infinity,
+          alignment: Alignment.center,
+          child: ConstrainedBox(
+            constraints: BoxConstraints(maxWidth: 1200),
+            child: Column(
+              children: <Widget>[
+                filterBar(context, setState),
+                //display buttons
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    RaisedButton(
+                      textTheme: ButtonTextTheme.primary,
+                      child: Text("Info"),
+                      color: filterModel.displayMode[0] ? Colors.blueGrey : Colors.blue,
+                      onPressed: () {
+                        setState(() {
+                          filterModel.displayMode[0] = true;
+                          filterModel.displayMode[1] = false;
+                          filterModel.displayMode[2] = false;
+                        });
+                      },
+                    ),
+                    Padding(padding: EdgeInsets.symmetric(horizontal: 10)),
+                    RaisedButton(
+                      textTheme: ButtonTextTheme.primary,
+                      child: Text("Enhance"),
+                      color: filterModel.displayMode[1] ? Colors.blueGrey : Colors.blue,
+                      onPressed: () {
+                        setState(() {
+                          filterModel.displayMode[0] = false;
+                          filterModel.displayMode[1] = true;
+                          filterModel.displayMode[2] = false;
+                        });
+                      },
+                    ),
+                    Padding(padding: EdgeInsets.symmetric(horizontal: 10)),
+                    RaisedButton(
+                      textTheme: ButtonTextTheme.primary,
+                      child: Text("Skill Mod"),
+                      color: filterModel.displayMode[2] ? Colors.blueGrey : Colors.blue,
+                      onPressed: () {
+                        setState(() {
+                          filterModel.displayMode[0] = false;
+                          filterModel.displayMode[1] = false;
+                          filterModel.displayMode[2] = true;
+                        });
+                      },
+                    )
+                  ],
                 ),
-                RaisedButton(
-                  textTheme: ButtonTextTheme.primary,
-                  child: Text("Enhance"),
-                  color: filterModel.displayMode[1] ? Colors.blueGrey : Colors.blue,
-                  onPressed: () {
-                    setState(() {
-                      filterModel.displayMode[0] = false;
-                      filterModel.displayMode[1] = true;
-                      filterModel.displayMode[2] = false;
-                    });
-                  },
-                ),
-                RaisedButton(
-                  textTheme: ButtonTextTheme.primary,
-                  child: Text("Skill Mod"),
-                  color: filterModel.displayMode[2] ? Colors.blueGrey : Colors.blue,
-                  onPressed: () {
-                    setState(() {
-                      filterModel.displayMode[0] = false;
-                      filterModel.displayMode[1] = false;
-                      filterModel.displayMode[2] = true;
-                    });
-                  },
-                )
+                //Displayed skills
+                Expanded(child: SkillDB(filterModel))
               ],
             ),
-            //Displayed skills
-            Expanded(child: SkillDB(filterModel))
-          ],
+          ),
         ));
   }
 }

@@ -3,6 +3,7 @@ import 'package:mgcm_tools/screens/common/DressesPage.dart';
 import 'package:mgcm_tools/screens/common/SkillsPage.dart';
 import 'package:mgcm_tools/widgets/common/AppDrawer.dart';
 import 'package:mgcm_tools/widgets/common/HomeCard.dart';
+import 'package:mgcm_tools/widgets/common/WebAppBar.dart';
 
 class HomePageLarge extends StatefulWidget {
   HomePageLarge({Key key, this.title}) : super(key: key);
@@ -25,14 +26,20 @@ class _HomePageLargeState extends State<HomePageLarge> {
         drawer: new AppDrawer(
           currentRoute: '/',
         ),
-        appBar: AppBar(
-          title: Text(widget.title),
-        ),
-        body: ListView.builder(
-            padding: const EdgeInsets.all(8),
-            itemCount: 2,
-            itemBuilder: (BuildContext context, int index) {
-              return new HomeCard(_imagePaths[index], _titles[index], _descriptions[index], _navigateWidgets[index]);
-            }));
+        appBar: WebAppBar('/'),
+        body: Container(
+          width: double.infinity,
+          alignment: Alignment.center,
+          child: ConstrainedBox(
+            constraints: BoxConstraints(maxWidth: 1200),
+            child: ListView.builder(
+                padding: const EdgeInsets.all(8),
+                itemCount: 2,
+                itemBuilder: (BuildContext context, int index) {
+                  return new HomeCard(
+                      _imagePaths[index], _titles[index], _descriptions[index], _navigateWidgets[index]);
+                }),
+          ),
+        ));
   }
 }

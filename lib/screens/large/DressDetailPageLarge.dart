@@ -5,6 +5,7 @@ import 'package:mgcm_tools/model/Dress.dart';
 import 'package:mgcm_tools/model/DressSkill.dart';
 import 'package:mgcm_tools/widgets/common/AppDrawer.dart';
 import 'package:mgcm_tools/widgets/common/SilverGridDelegateCustomHeight.dart';
+import 'package:mgcm_tools/widgets/common/WebAppBar.dart';
 import 'package:mgcm_tools/widgets/skill/SkillCard.dart';
 
 class DressDetailPageLarge extends StatefulWidget {
@@ -86,10 +87,7 @@ class _DressDetailPageLargeState extends State<DressDetailPageLarge> {
   Widget build(BuildContext context) {
     if (dress == null) {
       return Scaffold(
-        drawer: new AppDrawer(),
-        appBar: AppBar(
-          title: Text(dressName),
-        ),
+        appBar: WebAppBar('/dressDetails'),
         body: Center(
           child: Text(
             'No Dress',
@@ -100,102 +98,118 @@ class _DressDetailPageLargeState extends State<DressDetailPageLarge> {
     }
     return Scaffold(
         drawer: new AppDrawer(),
-        appBar: AppBar(
-          title: Text(dressName),
-        ),
-        body: ListView(
-          padding: EdgeInsets.all(10),
-          children: [
-            Center(
-              child: FadeInImage(
-                image: AssetImage("assets/dress/" + dress.id.toString() + ".png"),
-                placeholder: AssetImage("assets/dress/placeholder.png"),
-                width: 200,
-                height: 200,
-                fadeInDuration: Duration(milliseconds: 10),
-              ),
-            ),
-            Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: [
-              Image(
-                image: AssetImage("assets/attribute/" +
-                    dress.attribute.toString().toLowerCase().split('.').last.toLowerCase() +
-                    ".png"),
-                width: 50,
-                height: 50,
-              ),
-              Image(image: AssetImage("assets/rarity/" + dress.rarity.toString() + ".png"), width: 50, height: 50),
-              Image(
-                  image: AssetImage("assets/type/" + dress.type.toString().toLowerCase() + ".png"),
-                  width: 50,
-                  height: 50)
-            ]),
-            Padding(padding: EdgeInsets.all(10)),
-            Container(
-                margin: EdgeInsets.all(5),
-                width: double.infinity,
-                color: Theme.of(context).accentColor,
-                child: Text(
-                  "Levels",
-                  textAlign: TextAlign.center,
-                  style: Theme.of(context).textTheme.headline5.copyWith(color: Colors.white),
-                )),
-            Center(
-              child: ToggleButtons(
-                children: _levels.map((level) {
-                  return Text(level.toString());
-                }).toList(),
-                selectedColor: Colors.blue,
-                isSelected: _levelToggles,
-                onPressed: (index) {
-                  setState(() {
-                    for (int i = 0; i < _levelToggles.length; i++) _levelToggles[i] = false;
-
-                    _levelToggles[index] = true;
-                    _curLevel = _levels[index];
-                    updateStatsTable();
-                  });
-                },
-              ),
-            ),
-            Padding(padding: EdgeInsets.all(10)),
-            GridView.builder(
-              shrinkWrap: true,
-              primary: true,
-              physics: NeverScrollableScrollPhysics(),
-              padding: EdgeInsets.symmetric(horizontal: 5, vertical: 0),
-              itemCount: _stats.length,
-              gridDelegate: SliverGridDelegateWithFixedCrossAxisCountAndFixedHeight(
-                height: 50,
-                crossAxisCount: 2,
-              ),
-              itemBuilder: (context, index) {
-                bool even = index % 2 == 0;
-                return Container(
-                  height: 50,
-                  decoration: BoxDecoration(
-                    color: even ? Colors.blue : Colors.white,
-                    border: Border.all(
-                      color: Colors.black54,
-                      width: 0.3,
-                    ),
+        appBar: WebAppBar('/dressDetails'),
+        body: Container(
+          width: double.infinity,
+          alignment: Alignment.center,
+          child: ConstrainedBox(
+            constraints: BoxConstraints(maxWidth: 1200),
+            child: ListView(
+              padding: EdgeInsets.all(10),
+              children: [
+                Padding(padding: EdgeInsets.all(5)),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      dressName,
+                      style: Theme.of(context).textTheme.headline3,
+                    )
+                  ],
+                ),
+                Padding(padding: EdgeInsets.all(5)),
+                Center(
+                  child: FadeInImage(
+                    image: AssetImage("assets/dress/" + dress.id.toString() + ".png"),
+                    placeholder: AssetImage("assets/dress/placeholder.png"),
+                    width: 200,
+                    height: 200,
+                    fadeInDuration: Duration(milliseconds: 10),
                   ),
-                  child: Center(
-                      child: Text(
-                    _stats[index],
-                    style: Theme.of(context).textTheme.headline6.copyWith(color: even ? Colors.white : Colors.black),
-                  )),
-                );
-              },
+                ),
+                Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: [
+                  Image(
+                    image: AssetImage("assets/attribute/" +
+                        dress.attribute.toString().toLowerCase().split('.').last.toLowerCase() +
+                        ".png"),
+                    width: 50,
+                    height: 50,
+                  ),
+                  Image(image: AssetImage("assets/rarity/" + dress.rarity.toString() + ".png"), width: 50, height: 50),
+                  Image(
+                      image: AssetImage("assets/type/" + dress.type.toString().toLowerCase() + ".png"),
+                      width: 50,
+                      height: 50)
+                ]),
+                Padding(padding: EdgeInsets.all(10)),
+                Container(
+                    margin: EdgeInsets.all(5),
+                    width: double.infinity,
+                    color: Theme.of(context).accentColor,
+                    child: Text(
+                      "Levels",
+                      textAlign: TextAlign.center,
+                      style: Theme.of(context).textTheme.headline5.copyWith(color: Colors.white),
+                    )),
+                Center(
+                  child: ToggleButtons(
+                    children: _levels.map((level) {
+                      return Text(level.toString());
+                    }).toList(),
+                    selectedColor: Colors.blue,
+                    isSelected: _levelToggles,
+                    onPressed: (index) {
+                      setState(() {
+                        for (int i = 0; i < _levelToggles.length; i++) _levelToggles[i] = false;
+
+                        _levelToggles[index] = true;
+                        _curLevel = _levels[index];
+                        updateStatsTable();
+                      });
+                    },
+                  ),
+                ),
+                Padding(padding: EdgeInsets.all(10)),
+                GridView.builder(
+                  shrinkWrap: true,
+                  primary: true,
+                  physics: NeverScrollableScrollPhysics(),
+                  padding: EdgeInsets.symmetric(horizontal: 5, vertical: 0),
+                  itemCount: _stats.length,
+                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCountAndFixedHeight(
+                    height: 50,
+                    crossAxisCount: 2,
+                  ),
+                  itemBuilder: (context, index) {
+                    bool even = index % 2 == 0;
+                    return Container(
+                      height: 50,
+                      decoration: BoxDecoration(
+                        color: even ? Colors.blue : Colors.white,
+                        border: Border.all(
+                          color: Colors.black54,
+                          width: 0.3,
+                        ),
+                      ),
+                      child: Center(
+                          child: Text(
+                        _stats[index],
+                        style: Theme.of(context).textTheme.headline6.copyWith(color: even ? Colors.white : Colors.black),
+                      )),
+                    );
+                  },
+                ),
+                Padding(padding: EdgeInsets.all(30)),
+                SkillCard(s1),
+                Padding(padding: EdgeInsets.all(10)),
+                SkillCard(s2),
+                Padding(padding: EdgeInsets.all(10)),
+                SkillCard(s3),
+                Padding(padding: EdgeInsets.all(10)),
+                SkillCard(s4),
+              ],
             ),
-            Padding(padding: EdgeInsets.all(30)),
-            SkillCard(s1),
-            Padding(padding: EdgeInsets.all(10)),
-            SkillCard(s2),
-            Padding(padding: EdgeInsets.all(10)),
-            SkillCard(s3),
-            Padding(padding: EdgeInsets.all(10)),
-            SkillCard(s4),
-          ],
+          ),
         ));
   }
 }
