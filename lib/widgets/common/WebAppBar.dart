@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mgcm_tools/nav/routeConsts.dart';
 
 class WebAppBar extends StatelessWidget implements PreferredSizeWidget
 {
@@ -19,7 +20,7 @@ class WebAppBar extends StatelessWidget implements PreferredSizeWidget
           child: Row(
             children: [
               InkWell(
-                onTap: () {if(currentRoute != '/') Navigator.pushReplacementNamed(context, '/');},
+                onTap: () {if(currentRoute != HomeRoute) Navigator.pushNamed(context, HomeRoute);},
               child: Text('MAGICAMI TOOLS',
               style: Theme.of(context).textTheme.headline5.copyWith(color: Colors.white))),
               Expanded(
@@ -27,7 +28,7 @@ class WebAppBar extends StatelessWidget implements PreferredSizeWidget
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     InkWell(
-                      onTap: () {if(currentRoute != '/dresses') Navigator.pushReplacementNamed(context, '/dresses');},
+                      onTap: () {if(currentRoute != DressesRoute) Navigator.pushNamed(context, DressesRoute);},
                       child: Text(
                         'Dresses',
                         style: TextStyle(color: Colors.white,fontSize: 20,fontWeight: FontWeight.bold),
@@ -35,7 +36,7 @@ class WebAppBar extends StatelessWidget implements PreferredSizeWidget
                     ),
                     SizedBox(width: screenSize.width / 20),
                     InkWell(
-                      onTap: () {if(currentRoute != '/skills') Navigator.pushReplacementNamed(context, '/skills');},
+                      onTap: () {if(currentRoute != SkillsRoute) Navigator.pushNamed(context, SkillsRoute);},
                       child: Text(
                         'Skills',
                         style: TextStyle(color: Colors.white,fontSize: 20,fontWeight: FontWeight.bold),

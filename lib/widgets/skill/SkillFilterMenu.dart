@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:mgcm_tools/model/ModelEnums.dart';
 import 'package:mgcm_tools/widgets/common/SilverGridDelegateCustomHeight.dart';
-import 'package:tuple/tuple.dart';
 import 'package:mgcm_tools/widgets/skill/SkillFilterModel.dart';
+import 'package:tuple/tuple.dart';
 
 class SkillFilterMenu extends StatefulWidget {
   SkillFilterModel skillFilter;

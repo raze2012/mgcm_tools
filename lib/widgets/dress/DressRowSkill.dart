@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:mgcm_tools/model/Dress.dart';
 import 'package:mgcm_tools/model/DressSkill.dart';
-import 'package:mgcm_tools/screens/common/DressDetailPage.dart';
+import 'package:mgcm_tools/nav/routeConsts.dart';
 import 'package:mgcm_tools/widgets/dress/SkillPopup.dart';
 
 class DressRowSkill extends StatelessWidget {
@@ -29,9 +29,9 @@ class DressRowSkill extends StatelessWidget {
       child: InkWell(
           splashColor: Colors.blue.withAlpha(30),
           onTap: () {
-            Navigator.push(
+            Navigator.pushNamed(
               context,
-              MaterialPageRoute(builder: (context) => DressDetailPage(dressName: dress.name)),
+              Uri(path: DressDetailsRoute, queryParameters: {'name': dress.name.replaceAll(' ', '_')}).toString(),
             );
           },
           child: Row(children: <Widget>[

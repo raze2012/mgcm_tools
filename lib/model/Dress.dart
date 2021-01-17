@@ -1,5 +1,6 @@
 import 'package:hive/hive.dart';
 import 'package:mgcm_tools/model/ModelEnums.dart';
+
 part 'Dress.g.dart';
 
 @HiveType(typeId: 0)

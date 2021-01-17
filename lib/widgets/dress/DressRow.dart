@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mgcm_tools/model/Dress.dart';
-import 'package:mgcm_tools/screens/common/DressDetailPage.dart';
+import 'package:mgcm_tools/nav/routeConsts.dart';
 
 class DressRow extends StatelessWidget {
   final Dress dress;
@@ -13,9 +13,9 @@ class DressRow extends StatelessWidget {
       child: InkWell(
           splashColor: Colors.blue.withAlpha(30),
           onTap: () {
-            Navigator.push(
+            Navigator.pushNamed(
               context,
-              MaterialPageRoute(builder: (context) => DressDetailPage(dressName: dress.name)),
+              Uri(path: DressDetailsRoute, queryParameters: {'name': dress.name.replaceAll(' ', '_')}).toString(),
             );
           },
           child: Row(children: <Widget>[

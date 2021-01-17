@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_search_bar/flutter_search_bar.dart';
 import 'package:mgcm_tools/model/DressSort.dart';
-import 'package:mgcm_tools/widgets/common/AppDrawer.dart';
 import 'package:mgcm_tools/widgets/common/WebAppBar.dart';
 import 'package:mgcm_tools/widgets/skill/SkillDB.dart';
 import 'package:mgcm_tools/widgets/skill/SkillFilterMenu.dart';
@@ -24,7 +23,7 @@ class SkillsPageLargeState extends State<SkillsPageLarge> {
 
   AppBar buildAppBar(BuildContext context) {
     clearSearch();
-    return AppBar(toolbarHeight: 70.0,title: WebAppBar('/skills'),actions: [searchBar.getSearchAction(context)]);
+    return AppBar(leading: SizedBox.shrink(),toolbarHeight: 70.0,title: WebAppBar('/skills'),actions: [searchBar.getSearchAction(context)]);
   }
 
   SkillsPageLargeState() {

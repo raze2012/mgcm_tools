@@ -1,6 +1,6 @@
+import 'package:flutter/material.dart';
 import 'package:mgcm_tools/model/DressSort.dart';
 import 'package:tuple/tuple.dart';
-import 'package:flutter/material.dart';
 
 class DressFilterModel
 {

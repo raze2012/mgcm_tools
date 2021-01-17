@@ -9,12 +9,13 @@ import 'package:mgcm_tools/widgets/common/WebAppBar.dart';
 import 'package:mgcm_tools/widgets/skill/SkillCard.dart';
 
 class DressDetailPageLarge extends StatefulWidget {
-  DressDetailPageLarge({Key key, this.dressName}) : super(key: key);
+  DressDetailPageLarge(this.id,this.dressName,{Key key}) : super(key: key);
 
   final String dressName;
+  final int id;
 
   @override
-  _DressDetailPageLargeState createState() => _DressDetailPageLargeState(dressName);
+  _DressDetailPageLargeState createState() => _DressDetailPageLargeState(id,dressName);
 }
 
 class _DressDetailPageLargeState extends State<DressDetailPageLarge> {
@@ -24,14 +25,15 @@ class _DressDetailPageLargeState extends State<DressDetailPageLarge> {
   DressSkill s3;
   DressSkill s4;
   final formatter = new NumberFormat("#,###");
-  final String dressName;
+  String dressName;
+  int id;
 
   int _curLevel = 80;
   List<bool> _levelToggles = [false, false, false, false, false, false, true];
   List<int> _levels = [1, 30, 60, 65, 70, 75, 80];
   List<String> _stats = [];
 
-  _DressDetailPageLargeState(this.dressName);
+  _DressDetailPageLargeState(this.id,this.dressName);
 
   void updateStatsTable() {
     _stats.clear();
@@ -59,11 +61,28 @@ class _DressDetailPageLargeState extends State<DressDetailPageLarge> {
   @override
   void initState() {
     super.initState();
-    dress = Hive.box<Dress>("dresses").values.firstWhere((e) {
-      return e.name.toLowerCase() == dressName.toLowerCase();
-    }, orElse: () => null);
+
+    if(dressName != null) {
+      dress = Hive
+          .box<Dress>("dresses")
+          .values
+          .firstWhere((e) {
+        return e.name.toLowerCase() == dressName.toLowerCase();
+      }, orElse: () => null);
+    }
+    else
+    {
+      dress = Hive
+          .box<Dress>("dresses")
+          .values
+          .firstWhere((e) {
+        return e.id == id;
+      }, orElse: () => null);
+    }
 
     if (dress != null) {
+      dressName = dress.name;
+      id = dress.id;
       s1 = Hive.box<DressSkill>("skills").values.firstWhere((e) {
         return dress.skill1ID == e.id;
       }, orElse: () => null);

@@ -4,11 +4,12 @@ import 'package:hive/hive.dart';
 import 'package:mgcm_tools/model/Dress.dart';
 import 'package:mgcm_tools/model/DressSort.dart';
 import 'package:mgcm_tools/model/ModelEnums.dart';
+import 'package:mgcm_tools/widgets/dress/DressFilterModel.dart';
 import 'package:mgcm_tools/widgets/dress/DressRowSingleStat.dart';
 import 'package:mgcm_tools/widgets/dress/DressRowSkill.dart';
 import 'package:mgcm_tools/widgets/dress/DressRowStats.dart';
 import 'package:tuple/tuple.dart';
-import 'package:mgcm_tools/widgets/dress/DressFilterModel.dart';
+
 import 'DressRow.dart';
 
 

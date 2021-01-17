@@ -1,6 +1,6 @@
 import 'package:mgcm_tools/model/DressSort.dart';
-import 'package:tuple/tuple.dart';
 import 'package:mgcm_tools/model/ModelEnums.dart';
+import 'package:tuple/tuple.dart';
 
 class SkillFilterModel
 {

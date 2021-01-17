@@ -1,15 +1,13 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 import 'package:mgcm_tools/db/CSVToModel.dart';
 import 'package:mgcm_tools/model/Dress.dart';
 import 'package:mgcm_tools/model/DressSkill.dart';
 import 'package:mgcm_tools/model/ModelEnums.dart';
-import 'package:mgcm_tools/screens/common/DressesPage.dart';
-import 'package:mgcm_tools/screens/common/HomePage.dart';
-import 'package:mgcm_tools/screens/SettingsPage.dart';
-import 'package:mgcm_tools/screens/common/SkillsPage.dart';
-import 'package:hive_flutter/hive_flutter.dart';
+import 'package:mgcm_tools/nav/router.dart' as router;
+
+import 'nav/routeConsts.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -36,6 +34,7 @@ void main() async {
 
 class MagicamiTools extends StatelessWidget {
   final String title = "Magicami Tools";
+  final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
   MagicamiTools();
 
@@ -47,13 +46,10 @@ class MagicamiTools extends StatelessWidget {
         theme: ThemeData(
           primarySwatch: Colors.blue,
         ),
-        routes: <String, WidgetBuilder>{
-          '/': (context) => HomePage(title: 'Magicami Tools'),
-          '/dresses': (context) => DressesPage(title: "Dresses"),
-          '/skills': (context) => SkillsPage(title: "Skills"),
-          '/settings': (context) => SettingsPage(
-                title: "Settings",
-              )
-        });
+        navigatorKey: navigatorKey,
+        onGenerateRoute: router.generateRoute,
+        initialRoute: HomeRoute,
+        );
   }
+
 }

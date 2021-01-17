@@ -8,12 +8,13 @@ import 'package:mgcm_tools/widgets/common/SilverGridDelegateCustomHeight.dart';
 import 'package:mgcm_tools/widgets/skill/SkillCard.dart';
 
 class DressDetailPageSmall extends StatefulWidget {
-  DressDetailPageSmall({Key key, this.dressName}) : super(key: key);
+  DressDetailPageSmall(this.id,this.dressName,{Key key}) : super(key: key);
 
   final String dressName;
+  final int id;
 
   @override
-  _DressDetailPageStateSmall createState() => _DressDetailPageStateSmall(dressName);
+  _DressDetailPageStateSmall createState() => _DressDetailPageStateSmall(id,dressName);
 }
 
 class _DressDetailPageStateSmall extends State<DressDetailPageSmall> {
@@ -23,14 +24,15 @@ class _DressDetailPageStateSmall extends State<DressDetailPageSmall> {
   DressSkill s3;
   DressSkill s4;
   final formatter = new NumberFormat("#,###");
-  final String dressName;
+   String dressName;
+   int id;
 
   int _curLevel = 80;
   List<bool> _levelToggles = [false, false, false, false, false, false, true];
   List<int> _levels = [1, 30, 60, 65, 70, 75, 80];
   List<String> _stats = [];
 
-  _DressDetailPageStateSmall(this.dressName);
+  _DressDetailPageStateSmall(this.id,this.dressName);
 
   void updateStatsTable() {
     _stats.clear();
@@ -58,11 +60,27 @@ class _DressDetailPageStateSmall extends State<DressDetailPageSmall> {
   @override
   void initState() {
     super.initState();
-    dress = Hive.box<Dress>("dresses").values.firstWhere((e) {
-      return e.name.toLowerCase() == dressName.toLowerCase();
-    }, orElse: () => null);
+    if(dressName != null) {
+      dress = Hive
+          .box<Dress>("dresses")
+          .values
+          .firstWhere((e) {
+        return e.name.toLowerCase() == dressName.toLowerCase();
+      }, orElse: () => null);
+    }
+    else
+    {
+      dress = Hive
+          .box<Dress>("dresses")
+          .values
+          .firstWhere((e) {
+        return e.id == id;
+      }, orElse: () => null);
+    }
 
     if (dress != null) {
+      dressName = dress.name;
+      id = dress.id;
       s1 = Hive.box<DressSkill>("skills").values.firstWhere((e) {
         return dress.skill1ID == e.id;
       }, orElse: () => null);

@@ -1,5 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:mgcm_tools/nav/routeConsts.dart';
 
 class AppDrawer extends Drawer {
   final String currentRoute;
@@ -29,8 +30,8 @@ class AppDrawer extends Drawer {
               title: Text('Home'),
               onTap: () {
                 Navigator.pop(context);
-                if (currentRoute != '/') {
-                  Navigator.pushReplacementNamed(context, '/');
+                if (currentRoute != HomeRoute) {
+                  Navigator.pushReplacementNamed(context, HomeRoute);
                 }
               }),
           ListTile(
@@ -38,8 +39,8 @@ class AppDrawer extends Drawer {
               title: Text('Dresses'),
               onTap: () {
                 Navigator.pop(context);
-                if (currentRoute != '/dresses') {
-                  Navigator.pushNamedAndRemoveUntil(context, '/dresses', ModalRoute.withName('/'));
+                if (currentRoute != DressesRoute) {
+                  Navigator.pushNamedAndRemoveUntil(context, '/dresses', ModalRoute.withName(HomeRoute));
                 }
               }),
           ListTile(
@@ -47,8 +48,8 @@ class AppDrawer extends Drawer {
               title: Text('Skills'),
               onTap: () {
                 Navigator.pop(context);
-                if (currentRoute != '/skills') {
-                  Navigator.pushNamedAndRemoveUntil(context, '/skills', ModalRoute.withName('/'));
+                if (currentRoute != SkillsRoute) {
+                  Navigator.pushNamedAndRemoveUntil(context, '/skills', ModalRoute.withName(HomeRoute));
                 }
               }),
           const Divider(
@@ -65,8 +66,8 @@ class AppDrawer extends Drawer {
                 title: Text('Settings'),
                 onTap: () {
                   Navigator.pop(context);
-                  if (currentRoute != '/settings') {
-                    Navigator.pushNamed(context, '/settings');
+                  if (currentRoute != SettingsRoute) {
+                    Navigator.pushNamed(context, SettingsRoute);
                   }
                 }),
           ),

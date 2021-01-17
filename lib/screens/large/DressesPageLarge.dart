@@ -23,7 +23,7 @@ class _DressesPageLargeState extends State<DressesPageLarge> {
 
   AppBar buildAppBar(BuildContext context) {
     clearSearch();
-    return AppBar(toolbarHeight: 70.0, title: WebAppBar('/dresses'), actions: [searchBar.getSearchAction(context)]);
+    return AppBar(leading: SizedBox.shrink(),toolbarHeight: 70.0, title: WebAppBar('/dresses'), actions: [searchBar.getSearchAction(context)]);
   }
 
   _DressesPageLargeState() {

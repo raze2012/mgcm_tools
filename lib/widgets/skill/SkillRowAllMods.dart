@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mgcm_tools/model/DressSkill.dart';
-import 'package:mgcm_tools/screens/common/DressDetailPage.dart';
+import 'package:mgcm_tools/nav/routeConsts.dart';
 import 'package:mgcm_tools/widgets/common/SilverGridDelegateCustomHeight.dart';
 
 class SkillRowAllMods extends StatelessWidget {
@@ -61,9 +61,9 @@ class SkillRowAllMods extends StatelessWidget {
       child: InkWell(
           splashColor: Colors.blue.withAlpha(30),
           onTap: () {
-            Navigator.push(
+            Navigator.pushNamed(
               context,
-              MaterialPageRoute(builder: (context) => DressDetailPage(dressName: skill.ownerDressName)),
+              Uri(path: DressDetailsRoute, queryParameters: {'name': skill.ownerDressName.replaceAll(' ', '_')}).toString(),
             );
           },
           child: Row(children: <Widget>[

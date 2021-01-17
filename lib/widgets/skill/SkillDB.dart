@@ -4,6 +4,7 @@ import 'package:mgcm_tools/model/Dress.dart';
 import 'package:mgcm_tools/model/DressSkill.dart';
 import 'package:mgcm_tools/model/DressSort.dart';
 import 'package:mgcm_tools/model/ModelEnums.dart';
+import 'package:mgcm_tools/widgets/skill/SkillFilterModel.dart';
 import 'package:mgcm_tools/widgets/skill/SkillRow.dart';
 import 'package:mgcm_tools/widgets/skill/SkillRowAllMods.dart';
 import 'package:mgcm_tools/widgets/skill/SkillRowDPS.dart';
@@ -11,7 +12,6 @@ import 'package:mgcm_tools/widgets/skill/SkillRowEnhance.dart';
 import 'package:mgcm_tools/widgets/skill/SkillRowHitCount.dart';
 import 'package:mgcm_tools/widgets/skill/SkillRowMod.dart';
 import 'package:tuple/tuple.dart';
-import 'package:mgcm_tools/widgets/skill/SkillFilterModel.dart';
 
 class SkillDB extends StatelessWidget {
 
@@ -119,7 +119,6 @@ class SkillDB extends StatelessWidget {
 
     var skills = filteredBox.toList();
     skills.sort(skillSort);
-    var dresses = dressDB.values.toList();
 
     if (!filterModel.ascending) skills = skills.reversed.toList();
 

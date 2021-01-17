@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:mgcm_tools/screens/common/DressesPage.dart';
-import 'package:mgcm_tools/screens/common/SkillsPage.dart';
+import 'package:mgcm_tools/nav/routeConsts.dart';
 import 'package:mgcm_tools/widgets/common/AppDrawer.dart';
 import 'package:mgcm_tools/widgets/common/HomeCard.dart';
 
@@ -17,7 +16,7 @@ class _HomePageSmallState extends State<HomePageSmall> {
   var _imagePaths = ["assets/home/dresses.png", "assets/home/skills.png"];
   var _titles = ["Dress Catalog", "Skills List"];
   var _descriptions = ["Look up dresses and their stats and skills", "Look up skills, enhance levels, power, and more"];
-  var _navigateWidgets = [DressesPage(title: "Dresses"), SkillsPage(title: "Skills")];
+  var _navigateWidgets = [DressesRoute, SkillsRoute];
 
   @override
   Widget build(BuildContext context) {

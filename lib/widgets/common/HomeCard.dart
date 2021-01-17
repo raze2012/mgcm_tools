@@ -4,7 +4,7 @@ class HomeCard extends StatelessWidget {
   final String _imagePath;
   final String _categoryName;
   final String _categoryDesc;
-  final StatefulWidget _navigateTo;
+  final String _navigateTo;
 
   HomeCard(this._imagePath, this._categoryName, this._categoryDesc, this._navigateTo);
 
@@ -14,10 +14,7 @@ class HomeCard extends StatelessWidget {
       child: InkWell(
           splashColor: Colors.blue.withAlpha(30),
           onTap: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => _navigateTo),
-            );
+            Navigator.of(context).pushNamed( _navigateTo);
           },
           child: Column(children: <Widget>[
             Center(
