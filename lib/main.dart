@@ -22,14 +22,14 @@ void main() async {
   Hive.registerAdapter<Attribute>(AttributeAdapter());
   Hive.registerAdapter<Character>(CharacterAdapter());
 
-  runApp(MagicamiTools());
-
   final dressBox = await Hive.openBox<Dress>('dresses');
   final skillsBox = await Hive.openBox<DressSkill>('skills');
 
   if (skillsBox.isEmpty || dressBox.isEmpty) {
     await CSVToModel.flutterLoadDefaultDB();
   }
+
+  runApp(MagicamiTools());
 }
 
 class MagicamiTools extends StatelessWidget {
