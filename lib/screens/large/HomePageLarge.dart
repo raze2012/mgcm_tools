@@ -14,10 +14,11 @@ class HomePageLarge extends StatefulWidget {
 }
 
 class _HomePageLargeState extends State<HomePageLarge> {
-  var _imagePaths = ["assets/home/dresses.png", "assets/home/skills.png"];
-  var _titles = ["Dress Catalog", "Skills List"];
-  var _descriptions = ["Look up dresses and their stats and skills", "Look up skills, enhance levels, power, and more"];
-  var _navigateWidgets = [DressesRoute, SkillsRoute];
+  var _imagePaths = ["assets/home/dresses.png", "assets/home/skills.png","assets/home/damage_calc.png"];
+  var _titles = ["Dress Catalog", "Skills List","Damage Calculator"];
+  var _descriptions = ["Look up dresses and their stats and skills", "Look up skills, enhance levels, power, and more",
+    "figure out how much damage skills can do"];
+  var _navigateWidgets = [DressesRoute, SkillsRoute,DamageCalcRoute];
 
   @override
   Widget build(BuildContext context) {
@@ -33,7 +34,7 @@ class _HomePageLargeState extends State<HomePageLarge> {
             constraints: BoxConstraints(maxWidth: 1200),
             child: ListView.builder(
                 padding: const EdgeInsets.all(8),
-                itemCount: 2,
+                itemCount: 3,
                 itemBuilder: (BuildContext context, int index) {
                   return new HomeCard(
                       _imagePaths[index], _titles[index], _descriptions[index], _navigateWidgets[index]);

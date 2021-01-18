@@ -104,7 +104,7 @@ class _DressDetailPageStateSmall extends State<DressDetailPageSmall> {
   Widget build(BuildContext context) {
     if (dress == null) {
       return Scaffold(
-        drawer: new AppDrawer(),
+        drawer: AppDrawer(),
         appBar: AppBar(
           title: Text(dressName),
         ),

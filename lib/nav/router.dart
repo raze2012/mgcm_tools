@@ -8,6 +8,7 @@ import 'package:mgcm_tools/screens/common/DressDetailPage.dart';
 import 'package:mgcm_tools/screens/common/DressesPage.dart';
 import 'package:mgcm_tools/screens/common/HomePage.dart';
 import 'package:mgcm_tools/screens/common/SkillsPage.dart';
+import 'package:mgcm_tools/screens/common/DamageCalcPage.dart';
 
 Route<dynamic> generateRoute(RouteSettings settings) {
   var url = RoutingData.getRoutingData(settings.name);
@@ -25,6 +26,8 @@ Route<dynamic> generateRoute(RouteSettings settings) {
       return MaterialPageRoute(settings: settings,builder: (context) => DressDetailPage(id,name));
     case SkillsRoute:
       return MaterialPageRoute(settings: settings,builder: (context) => SkillsPage(title: 'Skills'));
+    case DamageCalcRoute:
+      return MaterialPageRoute(settings: settings,builder: (context) => DamageCalcPage(title: 'Damage Calculator'));
     case SettingsRoute:
       if(kIsWeb)
         return MaterialPageRoute(settings: settings,builder: (context) => HomePage(title: 'Magicami Tools'));

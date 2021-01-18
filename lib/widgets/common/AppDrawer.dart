@@ -40,7 +40,7 @@ class AppDrawer extends Drawer {
               onTap: () {
                 Navigator.pop(context);
                 if (currentRoute != DressesRoute) {
-                  Navigator.pushNamedAndRemoveUntil(context, '/dresses', ModalRoute.withName(HomeRoute));
+                  Navigator.pushNamedAndRemoveUntil(context, DressesRoute, ModalRoute.withName(HomeRoute));
                 }
               }),
           ListTile(
@@ -49,7 +49,16 @@ class AppDrawer extends Drawer {
               onTap: () {
                 Navigator.pop(context);
                 if (currentRoute != SkillsRoute) {
-                  Navigator.pushNamedAndRemoveUntil(context, '/skills', ModalRoute.withName(HomeRoute));
+                  Navigator.pushNamedAndRemoveUntil(context, SkillsRoute, ModalRoute.withName(HomeRoute));
+                }
+              }),
+          ListTile(
+              leading: Image(image: AssetImage('assets/home/damage_calc.png')),
+              title: Text('Damage Calculator'),
+              onTap: () {
+                Navigator.pop(context);
+                if (currentRoute != DamageCalcRoute) {
+                  Navigator.pushNamedAndRemoveUntil(context, DamageCalcRoute, ModalRoute.withName(HomeRoute));
                 }
               }),
           const Divider(
