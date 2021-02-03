@@ -19,9 +19,9 @@ to get the ball rolling.
 ### Short term goals
 
 - allow loading custom DB's from a file (android only).
+- Damage calculator
 - add a "best dubdress" tab to Dress Details page: allowing you to see which subdresses contribute
 the most stats to a particular main dress
-- Damage calculator
 - Simple Orb Rater
 
 ### Future niceties (probably not by me)
